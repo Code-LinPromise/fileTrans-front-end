@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate ,useLocation} from 'react-router-dom'
 
 
 type TagType="text" | "photo" | "file"
@@ -24,7 +24,10 @@ const TagList:TagListType[]=[
 ];
 export default function Home() {
   const navigate=useNavigate()
-  const [selectTag,setSelectTag]=useState<TagType>("text")
+  const location = useLocation();
+  console.log(location)
+  const initTag :TagType=location.pathname.slice(1) || "text"
+  const [selectTag,setSelectTag]=useState<TagType>(initTag)
   return (
     <div className="container mx-auto m-20 flex-auto flex items-center flex-col">
       <ul className='flex  flex-auto  justify-evenly p-2 w-3/5  rounded-2xl bg-slate-50 '>
