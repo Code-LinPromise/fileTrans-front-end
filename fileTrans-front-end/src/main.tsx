@@ -10,7 +10,5 @@ import { router } from './router';
 const hashRouter=createHashRouter(router)
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={hashRouter} />
-  </React.StrictMode>,
+  <RouterProvider router={hashRouter} />
 )
