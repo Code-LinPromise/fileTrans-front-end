@@ -31,7 +31,7 @@ export default function Home() {
         {
           TagList.map((item)=>{
             return <li key={item.tag} 
-            className={`p-2  rounded-2xl  cursor-pointer transition-colors whitespace-nowrap ${selectTag===item.tag? "text-sky-600" : ""}`}
+            className={`p-2  rounded-2xl  cursor-pointer transition-colors whitespace-nowrap  list-none ${selectTag===item.tag? "text-sky-600" : ""}`}
             onClick={()=>{
               setSelectTag(item.tag)
               navigate(`/${item.tag}`)

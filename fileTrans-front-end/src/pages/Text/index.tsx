@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
-import Button from '@mui/material/Button';
+import {Button,Input} from "antd"
 
+const { TextArea } = Input;
 export default function Text() {
   const [textValue,setTextValue]=useState<string>("")
   return (
     <div className='flex flex-col w-3/5 my-10'>
-      <textarea name="textarea" rows="10" cols="50" className='border-solid border-black border-2 my-10 rounded-lg p-2'
-      placeholder='请输入文本传输内容'
+      <TextArea  rows={10} placeholder="请输入需要上传的文本内容" 
+      className=' mb-10'
       onChange={(e)=>{
         console.log(e.target.value)
         setTextValue(e.target.value)
       }}
-      ></textarea>
-
-      <Button variant="contained" >上传</Button>
+      ></TextArea>
+      <Button type='primary'>
+        确认传输
+      </Button>
     </div>
   )
 }
