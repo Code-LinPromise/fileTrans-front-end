@@ -2,12 +2,17 @@ import Home from "../pages/Home"
 import Photo from "../pages/Photo"
 import Text from "../pages/Text"
 import File from "../pages/File"
+import Download from "../pages/Download"
 import { Navigate } from "react-router-dom"
 
 export const router=[
     {
         path: "/",
         element:(<Navigate to="/text"/>)
+    },
+    {
+        path:"/download",
+        element: <Download />,
     },
     {
         path: "/",
@@ -18,7 +23,7 @@ export const router=[
                 element: <Text />,
             },
             {
-                path:'/photo',
+                path:'/image',
                 element: <Photo />,
             },
             {

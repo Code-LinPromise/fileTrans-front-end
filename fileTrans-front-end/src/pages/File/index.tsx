@@ -21,7 +21,7 @@ export default function File() {
       }}
       onChange={({file,fileList})=>{
         setUploadList((state)=>{
-          return [...state,fileList[0]]
+          return [...state,file]
         })
       }}
       >
