@@ -4,7 +4,7 @@ import { useNavigate ,useLocation} from 'react-router-dom'
 import logo from "../../assets/upload.png"
 
 
-type TagType="text" | "photo" | "file"
+type TagType="text" | "image" | "file"
 type TagListType={
   name:string,
   tag:TagType
@@ -16,7 +16,7 @@ const TagList:TagListType[]=[
   },
   {
     name:"图片传输",
-    tag:"photo"
+    tag:"image"
   },
   {
     name:"文件传输",

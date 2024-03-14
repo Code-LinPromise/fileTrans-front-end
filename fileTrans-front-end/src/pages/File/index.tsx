@@ -1,25 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Upload ,message  } from 'antd';
-import type { UploadFile } from 'antd';
+import { Button, Upload   } from 'antd';
+import type { GetProp, UploadFile, UploadProps } from 'antd';
 import "./index.css"
+import { http } from '../../shared/Http';
+import Dialog from '../../components/dialog';
 
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function File() {
-  const [messageApi, contextHolder] = message.useMessage();
   const [uploadList,setUploadList]=useState<UploadFile[]>([])
+  const [fileLocation,setFileLocation]=useState("")
+  const [openDialog,setOpenDialog]=useState(false)
 
   function UploadHandle(){
-    console.log(uploadList)
+    setOpenDialog(true)
+    const img=uploadList[0];
+    const formData=new FormData()
+    formData.append("raw",img as FileType)
+    http.post("files",formData,{
+      headers:{
+        "Content-Type":" multipart/form-data"
+      }
+    }).then((res)=>{
+      setFileLocation(res.data.url)
+    })
+  }
+  function closeDialog(){
+    setOpenDialog(false)
   }
   return (
     <div className='w-3/5'>
-      {contextHolder}
       <Upload
       listType="picture"
       beforeUpload={()=>{
         return false;
       }}
-      onChange={({file,fileList})=>{
+      onChange={({file})=>{
         setUploadList((state)=>{
           return [...state,file]
         })
@@ -30,6 +46,9 @@ export default function File() {
       <Button type='primary' className='w-full my-10' onClick={()=>UploadHandle()}>
         确认传输
       </Button>
+      {
+        openDialog && <Dialog isOpen={openDialog} closeDialog={closeDialog} content={"file"} fileLocation={fileLocation}/>
+      }
     </div>
   )
 }

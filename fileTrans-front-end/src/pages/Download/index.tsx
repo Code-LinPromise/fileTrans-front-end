@@ -2,23 +2,20 @@ import React, { useEffect, useState } from 'react'
 import logo from "../../assets/upload.png"
 import { Button, Input,Image  } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { normalizeType, useQuery } from '../../tool/tool'
+import { useQuery } from '../../tool/tool'
 import { http } from '../../shared/Http'
 
 
 const { TextArea } = Input;
 export default function Download() {
   const query= useQuery()
-  let type =""
+  const {type ,url} =query;
   let node :React.ReactNode=null
-  console.log(query)
-  if(query.type && !Array.isArray(query.type)){
-    type = normalizeType(query.type)
-  }
   const [text, setText] = useState("")
+
   useEffect(() => {
-    if (type === "text" && query.url && !Array.isArray(query.url)) {
-      http.get(query.url).then(({ data }) => {
+    if (type === "text" && url && !Array.isArray(url)) {
+      http.get(url).then(({ data }) => {
         setText(data as string)
       })
     }
@@ -36,34 +33,33 @@ export default function Download() {
       )
       break;
     case "image":
-      if(query.url && !Array.isArray(query.url)){
+      if(url && !Array.isArray(url)){
         node =(
           <div className='flex flex-col items-center  w-3/5'>
-            <a href={query.url}>
+            <a href={url} className='flex flex-col items-center w-full'>
               <Image
-                  width={120}
-                  src={query.url}
+                  className='w-full'
+                  src={url}
                 />
-              <Button className=' mt-5'>长按或点击，即可下载图片</Button>
+              <Button className='w-full mt-5' type='primary'>长按或点击，即可下载图片</Button>
             </a>
           </div>
         )
       }
       break;
     case "file":
-      if(query.url && !Array.isArray(query.url)){
+      if(url && !Array.isArray(url)){
         node=(
           <div className='flex flex-col items-center  w-3/5'>
-            <a href={query.url}>
-              <Button>
+            <a href={url} className='w-full'>
+              <Button type='primary' className='w-full'>
                 点击下载文件
               </Button>
             </a>
           </div>
         )
       }
-      
-    
+      break;
   }
   const navigate = useNavigate()
   function goUploadClick() {

@@ -13,14 +13,16 @@ type Props = {
 export default function Dialog(props: Props) {
     const [addresses, setAddresses] = useState<string[]>([])
     const [qrcode, setQrcode] = useState<React.ReactNode>(null)
+    const [address,setAddress]=useState(localStorage.getItem("address") || "")
     useEffect(() => {
         http.get("/addresses").then((res) => {
             setAddresses(res.data.addresses)
         })
     }, [])
     function getQrcode(newValue: string) {
-        const content=encodeURIComponent(`http://${newValue}:5173/#/download?type=${props.content}&url=${props.fileLocation}`)
-        const imgUrl = `http://localhost:27149/api/v1/qrcodes?content=${content}`
+        const baseUrl=`http://${newValue}:27149`
+        const content=encodeURIComponent(`${baseUrl}/#/download?type=${props.content}&url=${baseUrl}/${encodeURIComponent(props.fileLocation)}`)
+        const imgUrl = `${baseUrl}/api/v1/qrcodes?content=${content}`
         prefetch(imgUrl).then(() => {
             setQrcode(<Image width={256} height={256} src={imgUrl} />)
         })
@@ -38,6 +40,7 @@ export default function Dialog(props: Props) {
                 <Select
                     style={{ width: 240 }}
                     onChange={(newValue: string) => {
+                        localStorage.setItem("address",newValue)
                         getQrcode(newValue)
                     }}
                     options={addresses.map((item) => {

@@ -32,7 +32,9 @@ export default function Text() {
       <Button type='primary' onClick={uploadText}>
         确认传输
       </Button>
-      <Dialog isOpen={openDialog} closeDialog={closeDialog} content={"text"} fileLocation={textLocation}/>
+      {
+        openDialog && <Dialog isOpen={openDialog} closeDialog={closeDialog} content={"text"} fileLocation={textLocation}/>
+      }
     </div>
   )
 }
