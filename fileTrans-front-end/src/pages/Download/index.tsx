@@ -10,7 +10,8 @@ const { TextArea } = Input;
 export default function Download() {
   const query= useQuery()
   let type =""
-  let node=null
+  let node :React.ReactNode=null
+  console.log(query)
   if(query.type && !Array.isArray(query.type)){
     type = normalizeType(query.type)
   }

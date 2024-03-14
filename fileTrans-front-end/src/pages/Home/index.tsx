@@ -26,7 +26,6 @@ const TagList:TagListType[]=[
 export default function Home() {
   const navigate=useNavigate()
   const location = useLocation();
-  console.log(location)
   const initTag :TagType=location.pathname.slice(1) || "text"
   const [selectTag,setSelectTag]=useState<TagType>(initTag)
   return (

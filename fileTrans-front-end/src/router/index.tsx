@@ -7,12 +7,12 @@ import { Navigate } from "react-router-dom"
 
 export const router=[
     {
-        path: "/",
-        element:(<Navigate to="/text"/>)
-    },
-    {
         path:"/download",
         element: <Download />,
+    },
+    {
+        path: "/",
+        element:(<Navigate to="/text"/>)
     },
     {
         path: "/",
