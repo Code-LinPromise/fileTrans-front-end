@@ -14,6 +14,7 @@ export default function Photo() {
   const [uploadList,setUploadList]=useState<UploadFile[]>([])
   const [imgLocation,setImgLocation]=useState("")
   const [messageApi, contextHolder] = message.useMessage();
+  const [isHave,setHave]=useState(false)
   function UploadHandle(){
     const img=uploadList[0];
     const formData=new FormData()
@@ -31,6 +32,8 @@ export default function Photo() {
           messageApi.success("传输成功，请在电脑端查看")
         }).catch(()=>{
           messageApi.error("传输失败，请检查局域网是否选择正确")
+        }).finally(()=>{
+          setHave(false)
         })
       }
     }
@@ -42,6 +45,8 @@ export default function Photo() {
         }
       }).then((res:AxiosResponse)=>{
         setImgLocation(res.data.url)
+      }).finally(()=>{
+        setHave(false)
       })
     }
   }
@@ -52,12 +57,14 @@ export default function Photo() {
     <div className='w-3/5'>
       {contextHolder}
       <Upload
+      disabled={isHave}
       listType="picture"
       accept=".jpg, .jpeg, .png"
       beforeUpload={()=>{
         return false;
       }}
       onChange={({file})=>{
+        setHave(true)
         setUploadList((state)=>{
           return [...state,file]
         })
