@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Modal, Select, Image, Button } from 'antd'
 import { http } from '../shared/Http'
 import { prefetch } from '../tool/prefetch'
+import type { AxiosResponse } from 'axios'
 
 
 type Props = {
@@ -10,13 +11,14 @@ type Props = {
     content:string
     fileLocation:string
 }
+type AddressesType={
+    addresses:string[]
+}
 export default function Dialog(props: Props) {
     const [addresses, setAddresses] = useState<string[]>([])
     const [qrcode, setQrcode] = useState<React.ReactNode>(null)
-    const [address,setAddress]=useState(localStorage.getItem("address") || "")
     useEffect(() => {
-        http.get("/addresses").then((res) => {
-            //@ts-ignore
+        http.get("/addresses").then((res:AxiosResponse) => {
             setAddresses(res.data.addresses)
         })
     }, [])
@@ -37,9 +39,10 @@ export default function Dialog(props: Props) {
             onCancel={props.closeDialog}
         >
             <div className='flex flex-col justify-center items-center'>
-                <p>请选择一个局域网地址</p>
+                <p>请选择一个局域网地址,局域网地址需确定为本机地址ipconfig命令查看（<a href="https://www.yuque.com/promise-epgj9/gd07pa/dx27vstm4b49gy2n?singleDoc#" target="_blank" rel="noreferrer">教程</a>）</p>
                 <p>
                     请 Windows 用户在防火墙入站规则中开通 27149 端口（<a href="https://jingyan.baidu.com/article/09ea3ede7311dec0afde3977.html" target="_blank" rel="noreferrer">教程</a>）</p>
+                
                 <Select
                     style={{ width: 240 }}
                     onChange={(newValue: string) => {

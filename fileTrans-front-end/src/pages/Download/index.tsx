@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import logo from "../../assets/upload.png"
-import { Button, Input,Image  } from 'antd'
+import { Button, Input,Image, message  } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '../../tool/tool'
 import { http } from '../../shared/Http'
@@ -11,6 +11,7 @@ export default function Download() {
   const query= useQuery()
   const {type ,url} =query;
   let node :React.ReactNode=null
+  const [messageApi, contextHolder] = message.useMessage();
   const [text, setText] = useState("")
 
   useEffect(() => {
@@ -24,6 +25,34 @@ export default function Download() {
   function goUploadClick() {
     navigate("/")
   }
+  function copyToClipboard(text:string) {
+    // 创建一个临时input元素
+    const tempInput = document.createElement('input');
+    
+    // 将要复制的文本赋值给该元素
+    tempInput.value = text;
+    
+    // 将该元素添加到DOM中（为了能调用select方法）
+    document.body.appendChild(tempInput);
+    
+    // 选中input中的文本
+    tempInput.select();
+    
+    try {
+      // 使用 Clipboard API 来执行复制操作
+      const successful = document.execCommand('copy');
+      if (successful) {
+        messageApi.success("复制成功！")
+      } else {
+        messageApi.error("复制失败~")
+      }
+    } catch  {
+      messageApi.error("复制失败~")
+    }
+  
+    // 完成后从DOM中移除临时input元素
+    document.body.removeChild(tempInput);
+  }
   switch(type){
     case "text":
       node =(
@@ -32,7 +61,7 @@ export default function Download() {
             value={text}
             readOnly
           ></TextArea>
-          <Button type='primary' className=' mt-5'>点击复制内容</Button>
+          <Button type='primary' className=' mt-5' onClick={()=>copyToClipboard(text) }>点击复制内容</Button>
         </div>
       )
       break;
@@ -69,6 +98,7 @@ export default function Download() {
   }
   return (
     <div className="container mx-auto  my-20 justify-center flex-auto flex items-center flex-col">
+      {contextHolder}
       <img src={logo} className='w-24 my-5' />
       <h2 className=' mb-5'>同步传</h2>
       {node}

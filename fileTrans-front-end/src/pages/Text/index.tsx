@@ -4,6 +4,7 @@ import { http, mobileHttp } from '../../shared/Http';
 import Dialog from '../../components/dialog';
 import { isMobile } from '../../tool/tool';
 import { notifyPc } from '../../tool/tool';
+import type { AxiosResponse } from 'axios';
 
 const { TextArea } = Input;
 export default function Text() {
@@ -14,13 +15,10 @@ export default function Text() {
   function uploadText(){
     if(isMobile()){
       const ip =`http://${location.host}`
-      console.log(`${ip}/api/v1/texts`)
       if(ip){
         mobileHttp.post(`${ip}/api/v1/texts`,{
           raw:textValue
-        }).then((res)=>{
-          //@ts-ignore
-          console.log(11111,"notify")
+        }).then((res:AxiosResponse)=>{
           notifyPc(res.data.url,"text")
           messageApi.success("传输成功，请在电脑端查看")
         }).catch(()=>{
@@ -31,8 +29,7 @@ export default function Text() {
     else{
       http.post("texts",{
         raw:textValue
-      }).then((res)=>{
-        //@ts-ignore
+      }).then((res:AxiosResponse)=>{
         setTextLocation(res.data.url)
         setOpenDialog(true)
       }).catch(()=>{

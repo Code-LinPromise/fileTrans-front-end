@@ -41,7 +41,7 @@ export default function Home() {
   const initTag :TagType=location.pathname.slice(1) || "text"
   const [selectTag,setSelectTag]=useState<TagType>(initTag)
   return (
-    <div className="container mx-auto my-10 flex-auto flex items-center flex-col">
+    <div className="container mx-auto my-5 flex-auto flex items-center flex-col">
       <img src={logo} className='w-24 my-5' />
       <h2>同步传</h2>
       <ul className='flex  flex-auto  justify-evenly p-2 w-3/5  rounded-2xl bg-slate-50 '>

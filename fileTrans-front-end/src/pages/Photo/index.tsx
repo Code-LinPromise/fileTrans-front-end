@@ -6,6 +6,7 @@ import "./index.css"
 import { http, mobileHttp } from '../../shared/Http';
 import Dialog from '../../components/dialog';
 import { isMobile,notifyPc } from '../../tool/tool';
+import type { AxiosResponse } from 'axios';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function Photo() {
@@ -24,8 +25,7 @@ export default function Photo() {
           headers:{
             "Content-Type":" multipart/form-data"
           }
-        }).then((res)=>{
-          //@ts-ignore
+        }).then((res:AxiosResponse)=>{
           notifyPc(res.data.url,"image")
           setImgLocation(res.data.url)
           messageApi.success("传输成功，请在电脑端查看")
@@ -40,8 +40,7 @@ export default function Photo() {
         headers:{
           "Content-Type":" multipart/form-data"
         }
-      }).then((res)=>{
-        //@ts-ignore
+      }).then((res:AxiosResponse)=>{
         setImgLocation(res.data.url)
       })
     }
