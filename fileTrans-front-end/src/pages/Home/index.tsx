@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React, { createContext, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useNavigate ,useLocation} from 'react-router-dom'
 import logo from "../../assets/upload.png"
+import { getWsClient } from '../../shared/ws_client'
 
 
 type TagType="text" | "image" | "file"
 type TagListType={
   name:string,
   tag:TagType
+}
+type WS_Type={
+  clientId:string,
+  type:string,
+  url:string
 }
 const TagList:TagListType[]=[
   {
@@ -26,6 +32,12 @@ const TagList:TagListType[]=[
 export default function Home() {
   const navigate=useNavigate()
   const location = useLocation();
+  getWsClient().then(c=>{
+    c.onMessage((data:WS_Type)=>{
+      navigate(`/download?type=${data.type}&url=${encodeURIComponent(`http://${window.location.host}${data.url}`)}`)
+    })
+  })
+  //@ts-ignore
   const initTag :TagType=location.pathname.slice(1) || "text"
   const [selectTag,setSelectTag]=useState<TagType>(initTag)
   return (
@@ -45,7 +57,8 @@ export default function Home() {
           })
         }
       </ul>
-      <Outlet/>
+      <Outlet />
+      
     </div>
   )
 }

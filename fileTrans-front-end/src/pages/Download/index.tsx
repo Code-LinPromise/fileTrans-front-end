@@ -20,6 +20,10 @@ export default function Download() {
       })
     }
   }, [type])
+  const navigate = useNavigate()
+  function goUploadClick() {
+    navigate("/")
+  }
   switch(type){
     case "text":
       node =(
@@ -48,6 +52,7 @@ export default function Download() {
       }
       break;
     case "file":
+      {
       if(url && !Array.isArray(url)){
         node=(
           <div className='flex flex-col items-center  w-3/5'>
@@ -59,11 +64,8 @@ export default function Download() {
           </div>
         )
       }
+    }
       break;
-  }
-  const navigate = useNavigate()
-  function goUploadClick() {
-    navigate("/")
   }
   return (
     <div className="container mx-auto  my-20 justify-center flex-auto flex items-center flex-col">

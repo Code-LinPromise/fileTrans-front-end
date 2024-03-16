@@ -5,6 +5,8 @@ type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
 type PatchConfig = Omit<AxiosRequestConfig, 'url' | 'data'>
 type DeleteConfig = Omit<AxiosRequestConfig, 'params'>
 
+
+
 export class Http {
     instance: AxiosInstance
 
@@ -13,13 +15,13 @@ export class Http {
             baseURL
         })
     }
-    get<R = unknown>(url: string, query?: Record<string, JSONValue>, config?: GetConfig) {
+    get<R = unknown>(url: string, query?: Record<string, any>, config?: GetConfig) {
         return this.instance.request<R>({ ...config, url: url, params: query, method: 'get' })
     }
-    post<R = unknown>(url: string, data?: Record<string, JSONValue>, config?: PostConfig) {
+    post<R = unknown>(url: string, data?: Record<string, any>, config?: PostConfig) {
         return this.instance.request<R>({ ...config, url, data, method: 'post' })
     }
-    patch<R = unknown>(url: string, data?: Record<string, JSONValue>, config?: PatchConfig) {
+    patch<R = unknown>(url: string, data?: Record<string, any>, config?: PatchConfig) {
         return this.instance.request<R>({ ...config, url, data, method: 'patch' })
     }
     delete<R = unknown>(url: string, query?: Record<string, string>, config?: DeleteConfig) {
@@ -28,3 +30,5 @@ export class Http {
 }
 
 export const http = new Http('http://127.0.0.1:27149/api/v1/')
+
+export const mobileHttp=axios.create({timeout:5000})

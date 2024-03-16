@@ -16,12 +16,13 @@ export default function Dialog(props: Props) {
     const [address,setAddress]=useState(localStorage.getItem("address") || "")
     useEffect(() => {
         http.get("/addresses").then((res) => {
+            //@ts-ignore
             setAddresses(res.data.addresses)
         })
     }, [])
     function getQrcode(newValue: string) {
         const baseUrl=`http://${newValue}:27149`
-        const content=encodeURIComponent(`${baseUrl}/#/download?type=${props.content}&url=${baseUrl}/${encodeURIComponent(props.fileLocation)}`)
+        const content=encodeURIComponent(`${baseUrl}/static/#/download?type=${props.content}&url=${baseUrl}${encodeURIComponent(props.fileLocation)}`)
         const imgUrl = `${baseUrl}/api/v1/qrcodes?content=${content}`
         prefetch(imgUrl).then(() => {
             setQrcode(<Image width={256} height={256} src={imgUrl} />)
@@ -37,6 +38,8 @@ export default function Dialog(props: Props) {
         >
             <div className='flex flex-col justify-center items-center'>
                 <p>请选择一个局域网地址</p>
+                <p>
+                    请 Windows 用户在防火墙入站规则中开通 27149 端口（<a href="https://jingyan.baidu.com/article/09ea3ede7311dec0afde3977.html" target="_blank" rel="noreferrer">教程</a>）</p>
                 <Select
                     style={{ width: 240 }}
                     onChange={(newValue: string) => {
